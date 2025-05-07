@@ -11,3 +11,24 @@
 </p>
 
 <br>
+
+# About
+
+**Lynx** is a stealthy TCP port scanner that supports multiple scanning techniques — **SYN**, **NULL**, **XMAS**, and **FIN** — allowing you to silently probe systems and reveal open ports without attracting attention.
+
+<br>
+
+# Installation
+
+```bash
+git clone https://github.com/0xf0xy/Lynx.git
+cd Lynx
+pip install .
+lynx -h
+```
+
+<br>
+
+# License
+
+This project is licensed under the [MIT License](./LICENSE).
