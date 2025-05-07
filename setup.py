@@ -8,7 +8,7 @@ setup(
     package_data={
         "lynx.data": ["common_ports.txt"],
     },
-    install_requires=["rich"],
+    install_requires=["rich", "scapy"],
     entry_points={
         "console_scripts": [
             "lynx=lynx.cli:main",
