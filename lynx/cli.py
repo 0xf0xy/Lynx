@@ -29,7 +29,7 @@ import asyncio
 
 def build_parser():
     parser = argparse.ArgumentParser(
-        description="Lynx: Stealth TCP port scanner", add_help=False
+        description="Lynx: Stealthy TCP port scanner", add_help=False
     )
 
     host = parser.add_argument_group("Host Settings")

@@ -32,7 +32,7 @@ import socket
 
 class Lynx:
     """
-    Lynx: Stealth TCP port scanner.
+    Lynx: Stealthy TCP port scanner.
     """
 
     def __init__(self):

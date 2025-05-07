@@ -14,7 +14,7 @@ setup(
             "lynx=lynx.cli:main",
         ],
     },
-    description="Stealth TCP port scanner",
+    description="Stealthy TCP port scanner",
     author="0xf0xy",
     license="MIT",
 )
