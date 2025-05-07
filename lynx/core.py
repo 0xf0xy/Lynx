@@ -72,7 +72,7 @@ class Lynx:
                 )
             elif status == "filtered":
                 print(
-                    f"[bold black]~[/bold black] Port [bold white]{port}[/bold white]: [bold black]FILTERED/NO CONNECTION[/bold black]"
+                    f"[bold black]~[/bold black] Port [bold white]{port}[/bold white]: [bold black]FILTERED[/bold black]"
                 )
             elif "error" in status:
                 print(
