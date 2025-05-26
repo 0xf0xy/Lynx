@@ -24,10 +24,15 @@ SOFTWARE.
 
 from scapy.all import IP, TCP, send, sr1, RandShort
 from importlib.resources import files
-from rich import print
 import asyncio
 import random
 import socket
+
+BLACK = "\033[1;30m"
+RED = "\033[1;31m"
+GREEN = "\033[1;32m"
+BLUE = "\033[1;34m"
+RESET = "\033[0m"
 
 
 class Lynx:
@@ -45,39 +50,39 @@ class Lynx:
         """
         Load data from the TXT file.
 
-        Sets common ports, TCP flags, and results.
+        Sets results dict.
         """
         with files("lynx.data").joinpath("common_ports.txt").open("r") as f:
             self.common_ports = [int(port) for port in f.readlines()]
 
-        self.flags = {"SYN": "S", "FIN": "F", "NULL": "", "XMAS": "FPU"}
         self.results = {}
 
-    def display_results(self):
+    def display_results(self, verbose: bool):
         """
         Display the results of the scan in an ordered format.
         """
-        print(f"[bold blue]*[/bold blue] Scan Results:")
+        print(f"{BLUE}*{RESET} Scan Results:")
+
+        any_open = False
 
         for port in sorted(self.results.keys()):
             status = self.results[port]
 
             if status == "open":
-                print(
-                    f"[bold green]+[/bold green] Port [bold white]{port}[/bold white]: [bold green]OPEN[/bold green]"
-                )
-            elif status == "closed":
-                print(
-                    f"[bold red]-[/bold red] Port [bold white]{port}[/bold white]: [bold red]CLOSED[/bold red]"
-                )
-            elif status == "filtered":
-                print(
-                    f"[bold black]~[/bold black] Port [bold white]{port}[/bold white]: [bold black]FILTERED[/bold black]"
-                )
-            elif "error" in status:
-                print(
-                    f"[bold red]-[/bold red] Port [bold white]{port}[/bold white]: [bold red]{status}[/bold red]"
-                )
+                print(f"{GREEN}+{RESET} Port {port}: {GREEN}OPEN{RESET}")
+                any_open = True
+
+            elif status == "closed" and verbose == True:
+                print(f"{RED}-{RESET} Port {port}: {RED}CLOSED{RESET}")
+
+            elif status == "filtered" and verbose == True:
+                print(f"{BLACK}~{RESET} Port {port}: {BLACK}FILTERED{RESET}")
+
+            elif "error" in status and verbose == True:
+                print(f"{RED}-{RESET} Port {port}: {RED}{status}{RESET}")
+
+        if not any_open and not verbose:
+            print(f"{RED}-{RESET} No open ports found.")
 
     async def scanner(self, target: str, port: int, flag: str, ttl: int):
         """
@@ -98,9 +103,9 @@ class Lynx:
             resp = sr1(pkt, timeout=1, verbose=0)
             if resp and resp.haslayer(TCP):
                 if resp[TCP].flags == 0x12:
-                    self.results[port] = "open"
                     rst = IP(dst=target) / TCP(dport=port, flags="R")
                     send(rst, verbose=0)
+                    self.results[port] = "open"
 
                 elif resp[TCP].flags == 0x14:
                     self.results[port] = "closed"
@@ -109,17 +114,18 @@ class Lynx:
                 self.results[port] = "filtered"
 
         except Exception as e:
-            self.results[port] = f"error ({e})"
+            self.results[port] = f"error: {e}"
 
-    async def scan(self, target: str, ports: str, flag: str, ttl: int):
+    async def run(self, target: str, ports: str, flag: str, ttl: int, verbose: bool):
         """
         Run the scanner on a list of ports for the given target.
 
         Args:
             target (str): Target hostname or IP.
             ports (str): Comma-separated list of port numbers.
-            flag (str): TCP flag to use for all scans.
+            flags (list[str]): TCP flags to use in scans.
             ttl (int): TTL value for packets.
+            verbose (bool): Enable verbose output.
         """
         try:
             resolved_ip = socket.gethostbyname(target)
@@ -136,13 +142,9 @@ class Lynx:
         else:
             port_list = self.common_ports
 
-        print(
-            f"[bold blue]*[/bold blue] Starting scan on [bold blue]{target}[/bold blue]\n"
-        )
+        print(f"{BLUE}*{RESET} Starting scan on {BLUE}{target}{RESET}\n")
 
-        tasks = [
-            self.scanner(target, port, self.flags[flag], ttl) for port in port_list
-        ]
+        tasks = [self.scanner(target, port, flag, ttl) for port in port_list]
         await asyncio.gather(*tasks)
 
-        self.display_results()
+        self.display_results(verbose)

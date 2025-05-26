@@ -32,7 +32,7 @@ def build_parser():
         description="Lynx: Stealthy TCP port scanner", add_help=False
     )
 
-    host = parser.add_argument_group("Host Settings")
+    host = parser.add_argument_group("Target Settings")
     host.add_argument("host", help="Targe host")
     host.add_argument(
         "-p",
@@ -41,15 +41,16 @@ def build_parser():
     )
 
     scan = parser.add_argument_group("Scan Settings")
-    scan.add_argument(
-        "-f",
-        "--flag",
-        default="SYN",
-        help="TCP scan type (SYN, FIN, NULL, XMAS)",
-    )
+    scan.add_argument("-s", "--syn", action="store_true", help="Perform SYN scan")
+    scan.add_argument("-f", "--fin", action="store_true", help="Perform FIN scan")
+    scan.add_argument("-n", "--null", action="store_true", help="Perform NULL scan")
+    scan.add_argument("-x", "--xmas", action="store_true", help="Perform XMAS scan")
     scan.add_argument("-t", "--ttl", type=int, default=64, help="Custom TTL value")
 
-    meta = parser.add_argument_group("Help & Version")
+    meta = parser.add_argument_group("Information")
+    meta.add_argument(
+        "-V", "--verbose", action="store_true", help="Enable verbose output"
+    )
     meta.add_argument("-h", "--help", action="help", help="Show this help menu")
     meta.add_argument(
         "-v",
@@ -63,11 +64,24 @@ def build_parser():
 
 
 def main():
+    flags_map = {"SYN": "S", "FIN": "F", "NULL": "", "XMAS": "FPU"}
+
     parser = build_parser()
     args = parser.parse_args()
 
     lynx = Lynx()
 
+    flags = [value for key, value in flags_map.items() if getattr(args, key.lower())]
+
+    if len(flags) > 1:
+        parser.error("you can only specify one scan type at a time.")
+
     asyncio.run(
-        lynx.scan(target=args.host, ports=args.ports, flag=args.flag, ttl=args.ttl)
+        lynx.run(
+            target=args.host,
+            ports=args.ports,
+            flag=flags[0],
+            ttl=args.ttl,
+            verbose=args.verbose,
+        )
     )
