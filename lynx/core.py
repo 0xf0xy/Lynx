@@ -50,19 +50,18 @@ class Lynx:
         """
         Load data from the TXT file.
 
-        Sets results dict.
+        Sets common ports, flags map, and results dict.
         """
         with files("lynx.data").joinpath("common_ports.txt").open("r") as f:
             self.common_ports = [int(port) for port in f.readlines()]
 
+        self.flags_map = {"SYN": "S", "FIN": "F", "NULL": "", "XMAS": "FPU"}
         self.results = {}
 
     def display_results(self, verbose: bool):
         """
         Display the results of the scan in an ordered format.
         """
-        print(f"{BLUE}*{RESET} Scan Results:")
-
         any_open = False
 
         for port in sorted(self.results.keys()):
@@ -73,16 +72,16 @@ class Lynx:
                 any_open = True
 
             elif status == "closed" and verbose == True:
-                print(f"{RED}-{RESET} Port {port}: {RED}CLOSED{RESET}")
+                print(f"{RED}x{RESET} Port {port}: {RED}CLOSED{RESET}")
 
             elif status == "filtered" and verbose == True:
                 print(f"{BLACK}~{RESET} Port {port}: {BLACK}FILTERED{RESET}")
 
             elif "error" in status and verbose == True:
-                print(f"{RED}-{RESET} Port {port}: {RED}{status}{RESET}")
+                print(f"{RED}x{RESET} Port {port}: {RED}{status}{RESET}")
 
         if not any_open and not verbose:
-            print(f"{RED}-{RESET} No open ports found.")
+            print(f"{RED}x{RESET} No open ports found.")
 
     async def scanner(self, target: str, port: int, flag: str, ttl: int):
         """
@@ -96,7 +95,7 @@ class Lynx:
         """
         await asyncio.sleep(random.uniform(0.05, 0.2))
         pkt = IP(dst=target, ttl=ttl, id=random.randint(1, 65535)) / TCP(
-            sport=RandShort(), dport=port, flags=flag
+            sport=RandShort(), dport=port, flags=self.flags_map[flag]
         )
 
         try:
@@ -128,10 +127,10 @@ class Lynx:
             verbose (bool): Enable verbose output.
         """
         try:
-            resolved_ip = socket.gethostbyname(target)
-            target = resolved_ip
+            target = socket.gethostbyname(target)
 
         except socket.gaierror:
+            print(f"{RED}x{RESET} Could not resolve host: {target}")
             return
 
         if ports:
@@ -142,9 +141,16 @@ class Lynx:
         else:
             port_list = self.common_ports
 
-        print(f"{BLUE}*{RESET} Starting scan on {BLUE}{target}{RESET}\n")
+        print(
+            f"{BLUE}*{RESET} Starting {BLUE}{flag}{RESET} scan on {BLUE}{target}{RESET}\n"
+        )
 
         tasks = [self.scanner(target, port, flag, ttl) for port in port_list]
-        await asyncio.gather(*tasks)
 
-        self.display_results(verbose)
+        try:
+            await asyncio.gather(*tasks)
+
+            self.display_results(verbose)
+
+        except asyncio.CancelledError:
+            print(f"\r\033[K{GREEN}+{RESET} Scan stopped by user.", flush=True)

@@ -33,7 +33,7 @@ def build_parser():
     )
 
     host = parser.add_argument_group("Target Settings")
-    host.add_argument("host", help="Targe host")
+    host.add_argument("host", help="Targe host or IP address")
     host.add_argument(
         "-p",
         "--ports",
@@ -64,14 +64,14 @@ def build_parser():
 
 
 def main():
-    flags_map = {"SYN": "S", "FIN": "F", "NULL": "", "XMAS": "FPU"}
+    flags = ["SYN", "FIN", "NULL", "XMAS"]
 
     parser = build_parser()
     args = parser.parse_args()
 
     lynx = Lynx()
 
-    flags = [value for key, value in flags_map.items() if getattr(args, key.lower())]
+    flags = [flag for flag in flags if getattr(args, flag.lower())]
 
     if len(flags) > 1:
         parser.error("you can only specify one scan type at a time.")
