@@ -23,7 +23,7 @@
 ```bash
 git clone https://github.com/0xf0xy/Lynx.git
 cd Lynx
-pip install .
+sudo pip install .
 lynx -h
 ```
 

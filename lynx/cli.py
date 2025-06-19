@@ -25,11 +25,14 @@ SOFTWARE.
 from lynx.core import Lynx
 import argparse
 import asyncio
+import os
 
 
 def build_parser():
     parser = argparse.ArgumentParser(
-        description="Lynx: Stealthy TCP port scanner", add_help=False
+        description="Lynx: Stealthy TCP port scanner",
+        epilog="You need root privileges to run this script.",
+        add_help=False,
     )
 
     host = parser.add_argument_group("Target Settings")
@@ -75,6 +78,9 @@ def main():
 
     if len(flags) > 1:
         parser.error("you can only specify one scan type at a time.")
+
+    if not os.geteuid() == 0:
+        parser.error("you must run this script with root privileges.")
 
     asyncio.run(
         lynx.run(
