@@ -67,13 +67,10 @@ def build_parser():
 
 
 def main():
-    flags = ["SYN", "FIN", "NULL", "XMAS"]
-
     parser = build_parser()
     args = parser.parse_args()
 
-    lynx = Lynx()
-
+    flags = ["SYN", "FIN", "NULL", "XMAS"]
     flags = [flag for flag in flags if getattr(args, flag.lower())]
 
     if len(flags) > 1:
@@ -82,6 +79,7 @@ def main():
     if not os.geteuid() == 0:
         parser.error("you must run this script with root privileges.")
 
+    lynx = Lynx()
     asyncio.run(
         lynx.run(
             target=args.host,
