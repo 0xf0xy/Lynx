@@ -31,13 +31,13 @@ import os
 def build_parser():
     parser = argparse.ArgumentParser(
         description="Lynx: Stealthy TCP port scanner",
-        epilog="You need root privileges to run this script.",
+        epilog="You need root privileges to run this tool.",
         add_help=False,
     )
 
-    host = parser.add_argument_group("Target Settings")
-    host.add_argument("host", help="Targe host or IP address")
-    host.add_argument(
+    target = parser.add_argument_group("Target Settings")
+    target.add_argument("host", help="Targe host or IP address")
+    target.add_argument(
         "-p",
         "--ports",
         help="Ports to scann (comma-separated)",
@@ -77,7 +77,7 @@ def main():
         parser.error("you can only specify one scan type at a time.")
 
     if not os.geteuid() == 0:
-        parser.error("you must run this script with root privileges.")
+        parser.error("you must run this tool with root privileges.")
 
     lynx = Lynx()
     asyncio.run(
