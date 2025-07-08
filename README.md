@@ -37,12 +37,6 @@ Do **NOT** use it on networks or systems without explicit permission.
 
 ___
 <p align="center">
-  🦊 Made by
-  <a href="https://github.com/0xf0xy">
-    0xf0xy
-  </a>
-  • Licensed under 
-  <a href="./LICENSE"> 
-    MIT
-  </a>
+  🦊 Made by <a href="https://github.com/0xf0xy" target="_blank"><b>0xf0xy</b></a> • 
+  Licensed under <a href="./LICENSE"><b>MIT</b></a>
 </p>
