@@ -40,7 +40,7 @@ def build_parser():
     target.add_argument(
         "-p",
         "--ports",
-        help="Ports to scann (comma-separated)",
+        help="Ports to scann (comma-separated or range)",
     )
 
     scan = parser.add_argument_group("Scan Settings")

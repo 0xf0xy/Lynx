@@ -121,7 +121,7 @@ class Lynx:
 
         Args:
             target (str): Target hostname or IP.
-            ports (str): Comma-separated list of port numbers.
+            ports (str): Single port, comma-separated list of port numbers or port range.
             flags (list[str]): TCP flags to use in scans.
             ttl (int): TTL value for packets.
             verbose (bool): Enable verbose output.
@@ -134,9 +134,18 @@ class Lynx:
             return
 
         if ports:
-            port_list = [
-                int(p.strip()) for p in ports.split(",") if p.strip().isdigit()
-            ]
+            if "," in ports or "-" in ports:
+                port_list = []
+                for port in ports.split(","):
+                    port = port.strip()
+                    if "-" in port:
+                        start, end = port.split("-")
+                        port_list.extend(range(int(start), int(end) + 1))
+                    else:
+                        port_list.append(int(port))
+
+            elif ports.isdigit():
+                port_list = [int(ports)]
 
         else:
             port_list = self.common_ports
