@@ -1,12 +1,9 @@
-<h1 align="center">🐱 Lynx - Stealthy TCP port scanner</h1>
+<h1 align="center">🐱 Lynx</h1>
+<p align="center"><em>Stealthy TCP port scanner</em></p>
 
 <p align="center">
-  <a href="https://www.python.org/"> 
-    <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=flat&logo=python&logoColor=white" />
-  </a>
-  <a href="https://opensource.org/licenses/MIT">
-    <img src="https://img.shields.io/badge/license-MIT-3DA639?style=flat&logo=OpenSourceInitiative&logoColor=white" />
-  </a>
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=flat&logo=python&logoColor=white"/></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-3DA639?style=flat&logo=OpenSourceInitiative&logoColor=white"/></a>
 </p>
 
 <br>
