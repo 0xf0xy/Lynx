@@ -27,10 +27,12 @@ from importlib.resources import files
 import asyncio
 import random
 import socket
+import os
 
 BLACK = "\033[1;30m"
 RED = "\033[1;31m"
 GREEN = "\033[1;32m"
+YELLOW = "\033[1;33m"
 BLUE = "\033[1;34m"
 RESET = "\033[0m"
 
@@ -68,20 +70,20 @@ class Lynx:
             status = self.results[port]
 
             if status == "open":
-                print(f"{GREEN}+{RESET} Port {port}: {GREEN}OPEN{RESET}")
+                print(f"    Port {port:<5} → {GREEN}OPEN{RESET}")
                 any_open = True
 
             elif status == "closed" and verbose == True:
-                print(f"{RED}x{RESET} Port {port}: {RED}CLOSED{RESET}")
+                print(f"    Port {port:<5} → {RED}CLOSED{RESET}")
 
             elif status == "filtered" and verbose == True:
-                print(f"{BLACK}~{RESET} Port {port}: {BLACK}FILTERED{RESET}")
+                print(f"    Port {port:<5} → {BLACK}FILTERED{RESET}")
 
             elif "error" in status and verbose == True:
-                print(f"{RED}x{RESET} Port {port}: {RED}{status}{RESET}")
+                print(f"    Port {port:<5} → {RED}{status}{RESET}")
 
         if not any_open and not verbose:
-            print(f"{RED}x{RESET} No open ports found.")
+            print(f"    [{RED}x{RESET}] No open ports found.")
 
     async def scanner(self, target: str, port: int, flag: str, ttl: int):
         """
@@ -126,11 +128,17 @@ class Lynx:
             ttl (int): TTL value for packets.
             verbose (bool): Enable verbose output.
         """
+        os.system("clear")
+
+        print(f"Target       : {BLUE}{target}{RESET}")
+        print(f"Scan Type    : {BLUE}{flag}{RESET}")
+        print("─" * 50, "\n")
+
         try:
-            target = socket.gethostbyname(target)
+            ip = socket.gethostbyname(target)
 
         except socket.gaierror:
-            print(f"{RED}x{RESET} Could not resolve host: {target}")
+            print(f"    [{RED}x{RESET}] Could not resolve host: {target}")
             return
 
         if ports:
@@ -150,11 +158,7 @@ class Lynx:
         else:
             port_list = self.common_ports
 
-        print(
-            f"{BLUE}*{RESET} Starting {BLUE}{flag}{RESET} scan on {BLUE}{target}{RESET}\n"
-        )
-
-        tasks = [self.scanner(target, port, flag, ttl) for port in port_list]
+        tasks = [self.scanner(ip, port, flag, ttl) for port in port_list]
 
         try:
             await asyncio.gather(*tasks)
@@ -162,4 +166,4 @@ class Lynx:
             self.display_results(verbose)
 
         except asyncio.CancelledError:
-            print(f"\r\033[K{GREEN}+{RESET} Scan stopped by user.", flush=True)
+            print(f"\r\033[K    [{YELLOW}!{RESET}] Scan stopped by user.", flush=True)

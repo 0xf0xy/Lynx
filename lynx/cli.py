@@ -84,7 +84,7 @@ def main():
         lynx.run(
             target=args.host,
             ports=args.ports,
-            flag=flags[0],
+            flag=flags[-1] if flags else "SYN",
             ttl=args.ttl,
             verbose=args.verbose,
         )
