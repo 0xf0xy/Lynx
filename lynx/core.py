@@ -44,15 +44,7 @@ class Lynx:
 
     def __init__(self):
         """
-        Initialize Lynx instance and load the configuration.
-        """
-        self._load_config()
-
-    def _load_config(self):
-        """
-        Load data from the TXT file.
-
-        Sets common ports, flags map, and results dict.
+        Initialize Lynx instance and load common ports from the data file.
         """
         with files("lynx.data").joinpath("common_ports.txt").open("r") as f:
             self.common_ports = [int(port) for port in f.readlines()]
