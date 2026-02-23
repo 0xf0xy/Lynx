@@ -5,7 +5,6 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/status-in_development-B8860B?style=flat"/>
-  <img src="https://img.shields.io/badge/version-1.0.0-2B2B2B?style=flat"/>
   <img src="https://img.shields.io/badge/python-3.10+-3776AB?style=flat&logo=python&logoColor=white"/>
   <img src="https://img.shields.io/badge/license-MIT-3DA639?style=flat"/>
 </p>
