@@ -63,6 +63,9 @@ class Lynx:
     def display_results(self, verbose: bool):
         """
         Display the results of the scan in an ordered format.
+
+        Args:
+            verbose (bool): Whether to show closed and filtered ports or only open ports.
         """
         any_open = False
 
@@ -139,6 +142,7 @@ class Lynx:
 
         except socket.gaierror:
             print(f"    [{RED}x{RESET}] Could not resolve host: {target}")
+
             return
 
         if ports:
