@@ -12,7 +12,7 @@
 
 ---
 
-## > About
+## > Overview
 
 **Lynx** is a stealth-oriented TCP port scanning engine designed for low-noise reconnaissance and surface mapping.
 
