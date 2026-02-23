@@ -1,27 +1,28 @@
 <h1 align="center">LYNX</h1>
-<p align="center"><em>stealth tcp port scanner</em></p>
-
 <p align="center">
-  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/python-3.10+-3776AB?style=flat&logo=python&logoColor=white"/></a> <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-3DA639?style=flat"/></a>
+  <em>stealth tcp port scanner</em>
 </p>
 
-<br>
+<p align="center">
+  <img src="https://img.shields.io/badge/status-in_development-B8860B?style=flat"/>
+  <img src="https://img.shields.io/badge/version-1.0.0-2B2B2B?style=flat"/>
+  <img src="https://img.shields.io/badge/python-3.10+-3776AB?style=flat&logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/license-MIT-3DA639?style=flat"/>
+</p>
+
+---
 
 ## > About
 
-**Lynx** is a stealth-focused TCP port scanner.
+**Lynx** is a stealth-oriented TCP port scanning engine designed for low-noise reconnaissance and surface mapping.
 
-It supports multiple scan techniques:
-- SYN
-- NULL
-- FIN
-- XMAS
+It implements multiple packet-level scan techniques, leveraging crafted TCP flag manipulation to identify exposed services while minimizing detection footprint.
 
-Designed to map exposed services while keeping noise to a minimum.
+Built for controlled testing environments and network reconnaissance research.
 
 <br>
 
-## > Install
+## > Installation
 
 ```bash
 git clone https://github.com/0xf0xy/Lynx.git
@@ -39,8 +40,9 @@ Any misuse is your responsibility.
 
 <br>
 
-___
+---
+
 <p align="center">
-  <a href="https://github.com/0xf0xy" target="_blank"><b>0xf0xy</b></a> • 
-  <a href="./LICENSE"><b>MIT</b></a>
+  <a href="https://github.com/0xf0xy"><b>0xf0xy</b></a> • 
+  <a href="./LICENSE"><b>MIT License</b></a>
 </p>
