@@ -1,4 +1,5 @@
 <h1 align="center">LYNX</h1>
+
 <p align="center">
   <em>stealth tcp port scanner</em>
 </p>
@@ -11,17 +12,29 @@
 
 ---
 
-<br>
-
 ## > Overview
 
-**Lynx** is a stealth-oriented TCP port scanning engine designed for low-noise reconnaissance and surface mapping.
+**Lynx** is a stealth-oriented TCP port scanning engine designed for low-noise reconnaissance and network surface mapping.
 
-It implements multiple packet-level scan techniques, leveraging crafted TCP flag manipulation to identify exposed services while minimizing detection footprint.
+The project focuses on packet-level scanning techniques using crafted TCP packets and flag manipulation to identify exposed services while reducing detection visibility.
 
-Built for controlled testing environments and network reconnaissance research.
+Lynx was built for:
 
-<br>
+* Network reconnaissance research
+* Controlled offensive security testing
+* Service exposure analysis
+* Low-noise TCP scanning experiments
+
+---
+
+## > Features
+
+* TCP-based port scanning
+* Crafted packet generation
+* TCP flag manipulation techniques
+* Stealth-oriented reconnaissance workflows
+
+---
 
 ## > Installation
 
@@ -29,17 +42,35 @@ Built for controlled testing environments and network reconnaissance research.
 git clone https://github.com/0xf0xy/Lynx.git
 cd Lynx
 sudo pip install .
+```
+
+Verify installation:
+
+```bash
 lynx -h
 ```
 
-<br>
+---
+
+## > Requirements
+
+* Python 3.10+
+* Linux system
+
+---
+
+## > Project Status
+
+Lynx is currently in active development.  
+Features, scanning techniques, and internal behavior may change during development.
+
+---
 
 ## > Warning
 
 This project is provided for **educational and research purposes only**.  
-Any misuse is your responsibility.
-
-<br>
+Only scan systems and networks you own or are explicitly authorized to test.  
+You are responsible for any misuse of this software.
 
 ---
 
